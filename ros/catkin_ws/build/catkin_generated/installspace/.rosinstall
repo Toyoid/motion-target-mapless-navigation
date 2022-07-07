@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/install/setup.sh
