@@ -67,14 +67,14 @@ set(turtlebot_lidar_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(turtlebot_lidar_SOURCE_PREFIX /home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/src/turtlebot_lidar)
-  set(turtlebot_lidar_DEVEL_PREFIX /home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/devel)
+  set(turtlebot_lidar_SOURCE_PREFIX /home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/src/turtlebot_lidar)
+  set(turtlebot_lidar_DEVEL_PREFIX /home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/devel)
   set(turtlebot_lidar_INSTALL_PREFIX "")
   set(turtlebot_lidar_PREFIX ${turtlebot_lidar_DEVEL_PREFIX})
 else()
   set(turtlebot_lidar_SOURCE_PREFIX "")
   set(turtlebot_lidar_DEVEL_PREFIX "")
-  set(turtlebot_lidar_INSTALL_PREFIX /home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/install)
+  set(turtlebot_lidar_INSTALL_PREFIX /home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/install)
   set(turtlebot_lidar_PREFIX ${turtlebot_lidar_INSTALL_PREFIX})
 endif()
 
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/install/lib;/home/toy/turtlebot2/turtlebot_ws/devel/lib;/opt/ros/melodic/lib)
+    foreach(path /home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/install/lib;/opt/ros/melodic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

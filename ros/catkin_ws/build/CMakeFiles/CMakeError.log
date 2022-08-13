@@ -1,24 +1,24 @@
 Determining if the pthread_create exist failed with the following output:
-Change Dir: /home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/build/CMakeFiles/CMakeTmp
+Change Dir: /home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_cb014/fast"
-/usr/bin/make -f CMakeFiles/cmTC_cb014.dir/build.make CMakeFiles/cmTC_cb014.dir/build
-make[1]: 进入目录“/home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/build/CMakeFiles/CMakeTmp”
-Building C object CMakeFiles/cmTC_cb014.dir/CheckSymbolExists.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_cb014.dir/CheckSymbolExists.c.o   -c /home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
-Linking C executable cmTC_cb014
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_cb014.dir/link.txt --verbose=1
-/usr/bin/cc      -rdynamic CMakeFiles/cmTC_cb014.dir/CheckSymbolExists.c.o  -o cmTC_cb014 
-CMakeFiles/cmTC_cb014.dir/CheckSymbolExists.c.o：在函数‘main’中：
+Run Build Command:"/usr/bin/make" "cmTC_9d8be/fast"
+/usr/bin/make -f CMakeFiles/cmTC_9d8be.dir/build.make CMakeFiles/cmTC_9d8be.dir/build
+make[1]: 进入目录“/home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/build/CMakeFiles/CMakeTmp”
+Building C object CMakeFiles/cmTC_9d8be.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_9d8be.dir/CheckSymbolExists.c.o   -c /home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_9d8be
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9d8be.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_9d8be.dir/CheckSymbolExists.c.o  -o cmTC_9d8be 
+CMakeFiles/cmTC_9d8be.dir/CheckSymbolExists.c.o：在函数‘main’中：
 CheckSymbolExists.c:(.text+0x1b)：对‘pthread_create’未定义的引用
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_cb014.dir/build.make:97: recipe for target 'cmTC_cb014' failed
-make[1]: *** [cmTC_cb014] Error 1
-make[1]: 离开目录“/home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/build/CMakeFiles/CMakeTmp”
-Makefile:126: recipe for target 'cmTC_cb014/fast' failed
-make: *** [cmTC_cb014/fast] Error 2
+CMakeFiles/cmTC_9d8be.dir/build.make:97: recipe for target 'cmTC_9d8be' failed
+make[1]: *** [cmTC_9d8be] Error 1
+make[1]: 离开目录“/home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/build/CMakeFiles/CMakeTmp”
+Makefile:126: recipe for target 'cmTC_9d8be/fast' failed
+make: *** [cmTC_9d8be/fast] Error 2
 
-File /home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+File /home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
 /* */
 #include <pthread.h>
 
@@ -34,22 +34,22 @@ int main(int argc, char** argv)
 }
 
 Determining if the function pthread_create exists in the pthreads failed with the following output:
-Change Dir: /home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/build/CMakeFiles/CMakeTmp
+Change Dir: /home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_941ee/fast"
-/usr/bin/make -f CMakeFiles/cmTC_941ee.dir/build.make CMakeFiles/cmTC_941ee.dir/build
-make[1]: 进入目录“/home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/build/CMakeFiles/CMakeTmp”
-Building C object CMakeFiles/cmTC_941ee.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_941ee.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.10/Modules/CheckFunctionExists.c
-Linking C executable cmTC_941ee
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_941ee.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_941ee.dir/CheckFunctionExists.c.o  -o cmTC_941ee -lpthreads 
+Run Build Command:"/usr/bin/make" "cmTC_f3aeb/fast"
+/usr/bin/make -f CMakeFiles/cmTC_f3aeb.dir/build.make CMakeFiles/cmTC_f3aeb.dir/build
+make[1]: 进入目录“/home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/build/CMakeFiles/CMakeTmp”
+Building C object CMakeFiles/cmTC_f3aeb.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_f3aeb.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.10/Modules/CheckFunctionExists.c
+Linking C executable cmTC_f3aeb
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f3aeb.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_f3aeb.dir/CheckFunctionExists.c.o  -o cmTC_f3aeb -lpthreads 
 /usr/bin/ld: 找不到 -lpthreads
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_941ee.dir/build.make:97: recipe for target 'cmTC_941ee' failed
-make[1]: *** [cmTC_941ee] Error 1
-make[1]: 离开目录“/home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/build/CMakeFiles/CMakeTmp”
-Makefile:126: recipe for target 'cmTC_941ee/fast' failed
-make: *** [cmTC_941ee/fast] Error 2
+CMakeFiles/cmTC_f3aeb.dir/build.make:97: recipe for target 'cmTC_f3aeb' failed
+make[1]: *** [cmTC_f3aeb] Error 1
+make[1]: 离开目录“/home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/build/CMakeFiles/CMakeTmp”
+Makefile:126: recipe for target 'cmTC_f3aeb/fast' failed
+make: *** [cmTC_f3aeb/fast] Error 2
 
 

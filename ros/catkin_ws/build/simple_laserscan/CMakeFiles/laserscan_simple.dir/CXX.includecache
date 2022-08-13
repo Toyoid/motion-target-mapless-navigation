@@ -6,23 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/devel/include/simple_laserscan/SimpleScan.h
-string
--
-vector
--
-map
--
-ros/types.h
--
-ros/serialization.h
--
-ros/builtin_message_traits.h
--
-ros/message_operations.h
--
-
-/home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/src/simple_laserscan/include/simple_laserscan/laserscan_simple.h
+/home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/src/simple_laserscan/include/simple_laserscan/laserscan_simple.h
 iostream
 -
 math.h
@@ -32,13 +16,13 @@ vector
 algorithm
 -
 ros/ros.h
-/home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/src/simple_laserscan/include/simple_laserscan/ros/ros.h
+/home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/src/simple_laserscan/include/simple_laserscan/ros/ros.h
 sensor_msgs/LaserScan.h
-/home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/src/simple_laserscan/include/simple_laserscan/sensor_msgs/LaserScan.h
+/home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/src/simple_laserscan/include/simple_laserscan/sensor_msgs/LaserScan.h
 simple_laserscan/SimpleScan.h
-/home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/src/simple_laserscan/include/simple_laserscan/simple_laserscan/SimpleScan.h
+/home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/src/simple_laserscan/include/simple_laserscan/simple_laserscan/SimpleScan.h
 
-/home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/src/simple_laserscan/src/laserscan_simple_rplidar.cpp
+/home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/src/simple_laserscan/src/laserscan_simple_rplidar.cpp
 laserscan_simple.h
 -
 

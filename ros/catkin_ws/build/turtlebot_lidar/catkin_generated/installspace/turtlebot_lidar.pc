@@ -1,4 +1,4 @@
-prefix=/home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/install
+prefix=/home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/install
 
 Name: turtlebot_lidar
 Description: Description of turtlebot_lidar

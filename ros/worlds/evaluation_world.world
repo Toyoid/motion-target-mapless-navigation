@@ -18,7 +18,7 @@
     </physics>
     <model name="target">
       <link name="link">
-	<collision name="collision1">
+	    <collision name="collision1">
           <geometry>
             <polyline>
               <point>0.2 0.2</point>
@@ -36,7 +36,7 @@
               <point>0.2 -0.2</point>
               <point>-0.2 -0.2</point>
               <point>-0.2 0.2</point>
-              <height>0.001</height>
+              <height>0.005</height>
             </polyline>
           </geometry>
           <material>
@@ -45,7 +45,135 @@
               <name>Gazebo/Red</name>
             </script>
           </material>
-        </visual>  
+        </visual>
+      </link>
+    </model>
+    <model name="target_predicted">
+      <link name="link">
+	    <collision name="collision1">
+          <geometry>
+            <polyline>
+              <point>0.15 0.15</point>
+              <point>0.15 -0.15</point>
+              <point>-0.15 -0.15</point>
+              <point>-0.15 0.15</point>
+              <height>0.001</height>
+            </polyline>
+          </geometry>
+        </collision>
+        <visual name="target_predicted">
+          <geometry>
+            <polyline>
+              <point>0.15 0.15</point>
+              <point>0.15 -0.15</point>
+              <point>-0.15 -0.15</point>
+              <point>-0.15 0.15</point>
+              <height>0.005</height>
+            </polyline>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Orange</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="pred_traj_point1">
+      <link name="link">
+	    <collision name="collision1">
+          <geometry>
+            <polyline>
+              <point>0.05 0.05</point>
+              <point>0.05 -0.05</point>
+              <point>-0.05 -0.05</point>
+              <point>-0.05 0.05</point>
+              <height>0.001</height>
+            </polyline>
+          </geometry>
+        </collision>
+        <visual name="pred_traj_point1">
+          <geometry>
+            <polyline>
+              <point>0.05 0.05</point>
+              <point>0.05 -0.05</point>
+              <point>-0.05 -0.05</point>
+              <point>-0.05 0.05</point>
+              <height>0.005</height>
+            </polyline>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Blue</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="pred_traj_point2">
+      <link name="link">
+	    <collision name="collision1">
+          <geometry>
+            <polyline>
+              <point>0.05 0.05</point>
+              <point>0.05 -0.05</point>
+              <point>-0.05 -0.05</point>
+              <point>-0.05 0.05</point>
+              <height>0.001</height>
+            </polyline>
+          </geometry>
+        </collision>
+        <visual name="pred_traj_point2">
+          <geometry>
+            <polyline>
+              <point>0.05 0.05</point>
+              <point>0.05 -0.05</point>
+              <point>-0.05 -0.05</point>
+              <point>-0.05 0.05</point>
+              <height>0.005</height>
+            </polyline>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Blue</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="pred_traj_point3">
+      <link name="link">
+	    <collision name="collision1">
+          <geometry>
+            <polyline>
+              <point>0.05 0.05</point>
+              <point>0.05 -0.05</point>
+              <point>-0.05 -0.05</point>
+              <point>-0.05 0.05</point>
+              <height>0.001</height>
+            </polyline>
+          </geometry>
+        </collision>
+        <visual name="pred_traj_point3">
+          <geometry>
+            <polyline>
+              <point>0.05 0.05</point>
+              <point>0.05 -0.05</point>
+              <point>-0.05 -0.05</point>
+              <point>-0.05 0.05</point>
+              <height>0.005</height>
+            </polyline>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Blue</name>
+            </script>
+          </material>
+        </visual>
       </link>
     </model>
     <model name="wall1">
@@ -78,7 +206,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
     <model name="wall2">
@@ -111,7 +239,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
     <model name="wall3">
@@ -144,7 +272,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
     <model name="wall4">
@@ -177,7 +305,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
     <model name="obs1">
@@ -210,7 +338,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
     <model name="obs2">
@@ -243,7 +371,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs3">
@@ -276,7 +404,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs4">
@@ -309,7 +437,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs5">
@@ -342,7 +470,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs6">
@@ -375,7 +503,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs7">
@@ -408,7 +536,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs8">
@@ -441,7 +569,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs9">
@@ -472,7 +600,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs10">
@@ -505,7 +633,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs11">
@@ -538,7 +666,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs12">
@@ -571,7 +699,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs13">
@@ -604,7 +732,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs14">
@@ -637,7 +765,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs15">
@@ -670,7 +798,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs16">
@@ -703,7 +831,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs17">
@@ -736,7 +864,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs18">
@@ -769,7 +897,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs19">
@@ -802,7 +930,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs20">
@@ -835,7 +963,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs21">
@@ -866,7 +994,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs22">
@@ -899,7 +1027,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs23">
@@ -930,7 +1058,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs24">
@@ -963,7 +1091,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs25">
@@ -996,7 +1124,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs26">
@@ -1029,7 +1157,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs27">
@@ -1062,7 +1190,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs28">
@@ -1095,7 +1223,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs29">
@@ -1128,7 +1256,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs30">
@@ -1161,7 +1289,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs31">
@@ -1192,7 +1320,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs32">
@@ -1225,7 +1353,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 <model name="obs33">
@@ -1258,7 +1386,7 @@
               <name>Gazebo/DarkGrey</name>
             </script>
           </material>
-        </visual>  
+        </visual>
       </link>
     </model>
 </world>

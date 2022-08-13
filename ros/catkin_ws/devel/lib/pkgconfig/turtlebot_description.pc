@@ -1,4 +1,4 @@
-prefix=/home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/devel
+prefix=/home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/devel
 
 Name: turtlebot_description
 Description: Description of turtlebot_description

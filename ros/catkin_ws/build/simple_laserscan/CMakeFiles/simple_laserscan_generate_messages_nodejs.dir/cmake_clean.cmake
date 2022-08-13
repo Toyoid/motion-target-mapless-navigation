@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/simple_laserscan_generate_messages_nodejs"
-  "/home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/devel/share/gennodejs/ros/simple_laserscan/msg/SimpleScan.js"
+  "/home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/devel/share/gennodejs/ros/simple_laserscan/msg/SimpleScan.js"
 )
 
 # Per-language clean rules from dependency scanning.

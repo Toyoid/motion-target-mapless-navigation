@@ -1,8 +1,8 @@
-prefix=/home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/devel
+prefix=/home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/devel
 
 Name: simple_laserscan
 Description: Description of simple_laserscan
 Version: 0.0.0
-Cflags: -I/home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/devel/include
+Cflags: -I/home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/devel/include
 Libs: -L${prefix}/lib 
 Requires: 

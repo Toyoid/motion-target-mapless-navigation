@@ -1,7 +1,6 @@
 import rospy
 import math
 import copy
-import random
 import numpy as np
 from shapely.geometry import Point
 from simple_laserscan.msg import SimpleScan
@@ -9,6 +8,9 @@ from gazebo_msgs.msg import ModelStates, ModelState
 from geometry_msgs.msg import Twist
 from std_srvs.srv import Empty
 from gazebo_msgs.srv import SetModelState
+from training.utils import robot_2_goal_dis_dir, euler_2_quat
+import sys
+sys.path.append('../../')
 
 
 class GazeboEnvironment:
@@ -23,17 +25,12 @@ class GazeboEnvironment:
      """
     def __init__(self,
                  laser_scan_half_num=9,
-                 laser_scan_min_dis=0.35,
-                 laser_scan_scale=1.0,
-                 scan_dir_num=36,
-                 goal_dis_min_dis=0.5,
-                 goal_dis_scale=1.0,
                  obs_near_th=0.35,
                  goal_near_th=0.5,
                  goal_reward=10,
                  obs_reward=-5,
                  goal_dis_amp=5,
-                 step_time=0.1):     # | step_time can determine robot's moving speed
+                 step_time=0.1):
         """
 
         :param laser_scan_half_num: half number of scan points
@@ -49,15 +46,11 @@ class GazeboEnvironment:
         :param goal_dis_amp: amplifier for goal distance change
         :param step_time: time for a single step (DEFAULT: 0.1 seconds)
         """
-        self.goal_pos_list = None
+        self.target_init_pos_list = None
+        self.env_range = None
         self.obstacle_poly_list = None
         self.robot_init_pose_list = None
-        self.laser_scan_half_num = laser_scan_half_num
-        self.laser_scan_min_dis = laser_scan_min_dis
-        self.laser_scan_scale = laser_scan_scale
-        self.scan_dir_num = scan_dir_num
-        self.goal_dis_min_dis = goal_dis_min_dis
-        self.goal_dis_scale = goal_dis_scale
+        self.scan_half_num = laser_scan_half_num
         self.obs_near_th = obs_near_th
         self.goal_near_th = goal_near_th
         self.goal_reward = goal_reward
@@ -67,13 +60,17 @@ class GazeboEnvironment:
         # Robot State
         self.robot_pose = [0., 0., 0.]
         self.robot_speed = [0., 0.]
-        self.robot_scan = np.zeros(self.scan_dir_num)
+        self.robot_scan = np.zeros(2 * self.scan_half_num)
         self.robot_state_init = False
         self.robot_scan_init = False
         # Goal Position
-        self.goal_position = [0., 0.]
-        self.goal_dis_dir_pre = [0., 0.]  # Last step goal distance and direction
-        self.goal_dis_dir_cur = [0., 0.]  # Current step goal distance and direction
+        self.target_position = [0., 0.]
+        self.target_dis_dir_pre = [0., 0.]  # Last step goal distance and direction
+        self.target_dis_dir_cur = [0., 0.]  # Current step goal distance and direction
+        self.ctrl_goal_pose_pre = [0., 0.]  # Last step controller's goal distance and direction
+        self.ctrl_goal_pose_cur = [0., 0.]  # Current step controller's goal distance and direction
+        # Path of motion target
+        self.target_path = None
         # Subscriber
         rospy.Subscriber('gazebo/model_states', ModelStates, self._robot_state_cb)
         rospy.Subscriber('simplescan', SimpleScan, self._robot_scan_cb)
@@ -91,7 +88,7 @@ class GazeboEnvironment:
             continue
         rospy.loginfo("Finish Subscriber Init...")
 
-    def step(self, action):
+    def step(self, action, goal, pred_traj_point1, pred_traj_point2, pred_traj_point3, ita_in_episode):
         """
         Step Function for the Environment
 
@@ -99,7 +96,7 @@ class GazeboEnvironment:
         :param action: action taken
         :return: state, reward, done
         """
-        assert self.goal_pos_list is not None
+        assert self.target_init_pos_list is not None
         assert self.obstacle_poly_list is not None
         rospy.wait_for_service('gazebo/unpause_physics')
         try:
@@ -115,6 +112,15 @@ class GazeboEnvironment:
         self.pub_action.publish(move_cmd)
         rospy.sleep(self.step_time)
         next_rob_state = self._get_next_robot_state()
+        # get next target state
+        if self.target_path:
+            self.target_position = self.target_path[ita_in_episode]
+        self._set_target_pos(self.target_position, 'target')
+        self._set_target_pos(goal, 'target_predicted')
+        self._set_target_pos(pred_traj_point1, 'pred_traj_point1')
+        self._set_target_pos(pred_traj_point2, 'pred_traj_point2')
+        self._set_target_pos(pred_traj_point3, 'pred_traj_point3')
+
         rospy.wait_for_service('gazebo/pause_physics')
         try:
             self.pause_gazebo()
@@ -126,14 +132,19 @@ class GazeboEnvironment:
         2. Compute Reward of the action
         3. Compute if the episode is ended
         '''
-        goal_dis, goal_dir = self._compute_dis_dir_2_goal(next_rob_state[0])
-        self.goal_dis_dir_cur = [goal_dis, goal_dir]
-        state = self._robot_state_2_ddpg_state(next_rob_state)
-        reward, done = self._compute_reward(next_rob_state)
-        self.goal_dis_dir_pre = [self.goal_dis_dir_cur[0], self.goal_dis_dir_cur[1]]
-        return state, reward, done
+        target_dis, target_dir = robot_2_goal_dis_dir(self.target_position, next_rob_state[0])
+        self.target_dis_dir_cur = [target_dis, target_dir]
 
-    def reset(self, ita):
+        ctrl_goal_dis, ctrl_goal_dir = robot_2_goal_dis_dir(goal, next_rob_state[0])
+        self.ctrl_goal_pose_cur = [ctrl_goal_dis, ctrl_goal_dir]
+
+        extrinsic_reward, done, intrinsic_reward, intrinsic_done = self._compute_reward(next_rob_state)
+
+        self.target_dis_dir_pre = [self.target_dis_dir_cur[0], self.target_dis_dir_cur[1]]
+        self.ctrl_goal_pose_pre = [self.ctrl_goal_pose_cur[0], self.ctrl_goal_pose_cur[1]]
+        return next_rob_state, extrinsic_reward, done, intrinsic_reward, intrinsic_done
+
+    def reset(self, ita, new_target_path):
         """
         Reset Function to reset simulation at start of each episode
 
@@ -141,34 +152,31 @@ class GazeboEnvironment:
         :param ita: number of route to reset to
         :return: state
         """
-        assert self.goal_pos_list is not None
+        assert self.target_init_pos_list is not None
         assert self.obstacle_poly_list is not None
+        assert self.env_range is not None
         assert self.robot_init_pose_list is not None
-        assert ita < len(self.goal_pos_list)
+        assert ita < len(self.target_init_pos_list)
         rospy.wait_for_service('gazebo/unpause_physics')
         try:
             self.unpause_gazebo()
         except rospy.ServiceException as e:
             print("Unpause Service Failed: %s" % e)
         '''
-        First choose new goal position and set target model to goal
+        First choose new goal position and set target model to goal,
         '''
-        self.goal_position = self.goal_pos_list[ita]
-        target_msg = ModelState()
-        target_msg.model_name = 'target'
-        target_msg.pose.position.x = self.goal_position[0]
-        target_msg.pose.position.y = self.goal_position[1]
-        rospy.wait_for_service('gazebo/set_model_state')
-        try:
-            resp = self.set_model_target(target_msg)
-        except rospy.ServiceException as e:
-            print("Set Target Service Failed: %s" % e)
+        self.target_position = self.target_init_pos_list[ita]
+        self._set_target_pos(self.target_position, 'target')
+        self._set_target_pos(self.target_position, 'target_predicted')
+        self._set_target_pos(self.target_position, 'pred_traj_point1')
+        self._set_target_pos(self.target_position, 'pred_traj_point2')
+        self._set_target_pos(self.target_position, 'pred_traj_point3')
         '''
         Then reset robot state and get initial state
         '''
         self.pub_action.publish(Twist())
         robot_init_pose = self.robot_init_pose_list[ita]
-        robot_init_quat = self._euler_2_quat(yaw=robot_init_pose[2])
+        robot_init_quat = euler_2_quat(yaw=robot_init_pose[2])
         robot_msg = ModelState()
         robot_msg.model_name = 'mobile_base'
         robot_msg.pose.position.x = robot_init_pose[0]
@@ -184,21 +192,27 @@ class GazeboEnvironment:
             print("Set Target Service Failed: %s" % e)
         rospy.sleep(0.5)
         '''
-        Transfer the initial robot state to the state for the DDPG Agent
+        New motion trajectory of target
         '''
-        rob_state = self._get_next_robot_state()
         rospy.wait_for_service('gazebo/pause_physics')
         try:
             self.pause_gazebo()
         except rospy.ServiceException as e:
             print("Pause Service Failed: %s" % e)
-        goal_dis, goal_dir = self._compute_dis_dir_2_goal(rob_state[0])
-        self.goal_dis_dir_pre = [goal_dis, goal_dir]
-        self.goal_dis_dir_cur = [goal_dis, goal_dir]
-        state = self._robot_state_2_ddpg_state(rob_state)
-        return state
 
-    def set_new_environment(self, init_pose_list, goal_list, obstacle_list):
+        self.target_path = new_target_path
+        '''
+        Generate initial robot state
+        '''
+        rob_state = self._get_next_robot_state()
+        target_dis, target_dir = robot_2_goal_dis_dir(self.target_position, rob_state[0])
+        self.target_dis_dir_pre = [target_dis, target_dir]
+        self.target_dis_dir_cur = [target_dis, target_dir]
+        self.ctrl_goal_pose_pre = [target_dis, target_dir]
+        self.ctrl_goal_pose_cur = [target_dis, target_dir]
+        return rob_state
+
+    def set_new_environment(self, init_pose_list, goal_list, obstacle_list, env_range):
         """
         Set New Environment for training
         :param init_pose_list: init pose list of robot
@@ -206,55 +220,9 @@ class GazeboEnvironment:
         :param obstacle_list: obstacle list
         """
         self.robot_init_pose_list = init_pose_list
-        self.goal_pos_list = goal_list
+        self.target_init_pos_list = goal_list
         self.obstacle_poly_list = obstacle_list
-
-    def _euler_2_quat(self, yaw=0, pitch=0, roll=0):
-        """
-        Transform euler angule to quaternion
-        :param yaw: z
-        :param pitch: y
-        :param roll: x
-        :return: quaternion
-        """
-        cy = math.cos(yaw * 0.5)
-        sy = math.sin(yaw * 0.5)
-        cp = math.cos(pitch * 0.5)
-        sp = math.sin(pitch * 0.5)
-        cr = math.cos(roll * 0.5)
-        sr = math.sin(roll * 0.5)
-        w = cy * cp * cr + sy * sp * sr
-        x = cy * cp * sr - sy * sp * cr
-        y = sy * cp * sr + cy * sp * cr
-        z = sy * cp * cr - cy * sp * sr
-        return [w, x, y, z]
-
-    def _compute_dis_dir_2_goal(self, pose):
-        """
-        Compute the difference of distance and direction to goal position
-        :param pose: pose of the robot
-        :return: distance, direction
-        """
-        delta_x = self.goal_position[0] - pose[0]
-        delta_y = self.goal_position[1] - pose[1]
-        distance = math.sqrt(delta_x**2 + delta_y**2)
-        ego_direction = math.atan2(delta_y, delta_x)
-        robot_direction = pose[2]
-        while robot_direction < 0:
-            robot_direction += 2 * math.pi
-        while robot_direction > 2 * math.pi:
-            robot_direction -= 2 * math.pi
-        while ego_direction < 0:
-            ego_direction += 2 * math.pi
-        while ego_direction > 2 * math.pi:
-            ego_direction -= 2 * math.pi
-        pos_dir = abs(ego_direction - robot_direction)
-        neg_dir = 2 * math.pi - abs(ego_direction - robot_direction)
-        if pos_dir <= neg_dir:
-            direction = math.copysign(pos_dir, ego_direction - robot_direction)
-        else:
-            direction = math.copysign(neg_dir, -(ego_direction - robot_direction))
-        return distance, direction
+        self.env_range = env_range
 
     def _get_next_robot_state(self):
         """
@@ -268,36 +236,6 @@ class GazeboEnvironment:
         tmp_robot_scan = copy.deepcopy(self.robot_scan)
         state = [tmp_robot_pose, tmp_robot_spd, tmp_robot_scan]
         return state
-
-    def _robot_state_2_ddpg_state(self, state):
-        """
-        Transform robot state to DDPG state
-        Robot State: [robot_pose, robot_spd, scan]
-        DDPG state: [Distance to goal, Direction to goal, Linear Spd, Angular Spd, Scan]
-        :param state: robot state
-        :return: ddpg_state
-        """
-        tmp_goal_dis = self.goal_dis_dir_cur[0]
-        if tmp_goal_dis == 0:
-            tmp_goal_dis = self.goal_dis_scale
-        else:
-            tmp_goal_dis = self.goal_dis_min_dis / tmp_goal_dis
-            if tmp_goal_dis > 1:
-                tmp_goal_dis = 1
-            tmp_goal_dis = tmp_goal_dis * self.goal_dis_scale
-        ddpg_state = [self.goal_dis_dir_cur[1], tmp_goal_dis, state[1][0], state[1][1]]
-        '''
-        Transform distance in laser scan to [0, scale]
-        '''
-        tmp_laser_scan = self.laser_scan_scale * (self.laser_scan_min_dis / state[2])
-        tmp_laser_scan = np.clip(tmp_laser_scan, 0, self.laser_scan_scale)
-        for num in range(self.laser_scan_half_num):
-            ita = self.laser_scan_half_num - num - 1
-            ddpg_state.append(tmp_laser_scan[ita])
-        for num in range(self.laser_scan_half_num):
-            ita = len(state[2]) - num - 1
-            ddpg_state.append(tmp_laser_scan[ita])
-        return ddpg_state
 
     def _compute_reward(self, state):
         """
@@ -313,6 +251,7 @@ class GazeboEnvironment:
         :return: reward, done
         """
         done = False
+        intrinsic_done = False
         '''
         First compute distance to all obstacles
         '''
@@ -326,15 +265,39 @@ class GazeboEnvironment:
         '''
         Assign Rewards
         '''
-        if self.goal_dis_dir_cur[0] < self.goal_near_th:
-            reward = self.goal_reward
+        if self.target_dis_dir_cur[0] < self.goal_near_th:
+            extrinsic_reward = self.goal_reward
             done = True
         elif near_obstacle:
-            reward = self.obs_reward
+            extrinsic_reward = self.obs_reward
             done = True
         else:
-            reward = self.goal_dis_amp * (self.goal_dis_dir_pre[0] - self.goal_dis_dir_cur[0])
-        return reward, done
+            extrinsic_reward = 0
+
+        if self.ctrl_goal_pose_cur[0] < self.goal_near_th:
+            intrinsic_reward = self.goal_reward
+            intrinsic_done = True
+        elif near_obstacle:
+            intrinsic_reward = self.obs_reward
+            intrinsic_done = True
+        else:
+            intrinsic_reward = self.goal_dis_amp * (self.ctrl_goal_pose_pre[0] - self.ctrl_goal_pose_cur[0])
+        return extrinsic_reward, done, intrinsic_reward, intrinsic_done
+
+    def _set_target_pos(self, goal_position, model_name):
+        """
+        Set goal position
+        """
+        target_msg = ModelState()
+        target_msg.model_name = model_name
+        target_msg.pose.position.x = goal_position[0]
+        target_msg.pose.position.y = goal_position[1]
+
+        rospy.wait_for_service('gazebo/set_model_state')
+        try:
+            resp = self.set_model_target(target_msg)
+        except rospy.ServiceException as e:
+            print("Set Target Service Failed: %s" % e)
 
     def _robot_state_cb(self, msg):
         """
@@ -361,5 +324,13 @@ class GazeboEnvironment:
         """
         if self.robot_scan_init is False:
             self.robot_scan_init = True
-        self.robot_scan = np.array(msg.data)
+        tmp_robot_scan_ita = 0
+        for num in range(self.scan_half_num):
+            ita = self.scan_half_num - num - 1
+            self.robot_scan[tmp_robot_scan_ita] = msg.data[ita]
+            tmp_robot_scan_ita += 1
+        for num in range(self.scan_half_num):
+            ita = len(msg.data) - num - 1
+            self.robot_scan[tmp_robot_scan_ita] = msg.data[ita]
+            tmp_robot_scan_ita += 1
 

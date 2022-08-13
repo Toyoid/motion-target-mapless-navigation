@@ -2,7 +2,7 @@
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/install")
+  set(CMAKE_INSTALL_PREFIX "/home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 

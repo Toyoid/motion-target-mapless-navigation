@@ -7,7 +7,7 @@
 # new environment variables
 
 # modified environment variables
-export CMAKE_PREFIX_PATH="/home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/devel:$CMAKE_PREFIX_PATH"
-export PWD='/home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/build'
-export ROSLISP_PACKAGE_DIRECTORIES="/home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/devel/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
-export ROS_PACKAGE_PATH="/home/guangzhi/Research/spiking-ddpg-mapless-navigation/ros/catkin_ws/src:/home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/src:$ROS_PACKAGE_PATH"
+export CMAKE_PREFIX_PATH="/home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/devel:$CMAKE_PREFIX_PATH"
+export PWD='/home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/build'
+export ROSLISP_PACKAGE_DIRECTORIES='/home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/devel/share/common-lisp'
+export ROS_PACKAGE_PATH='/home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/src:/opt/ros/melodic/share'

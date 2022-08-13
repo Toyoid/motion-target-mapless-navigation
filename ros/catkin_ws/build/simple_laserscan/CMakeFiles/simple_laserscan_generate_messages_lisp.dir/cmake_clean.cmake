@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/simple_laserscan_generate_messages_lisp"
-  "/home/toy/PycharmProjects/spiking-ddpg-mapless-navigation/ros/catkin_ws/devel/share/common-lisp/ros/simple_laserscan/msg/SimpleScan.lisp"
+  "/home/toy/PycharmProjects/motion-target-mapless-navigation/ros/catkin_ws/devel/share/common-lisp/ros/simple_laserscan/msg/SimpleScan.lisp"
 )
 
 # Per-language clean rules from dependency scanning.
